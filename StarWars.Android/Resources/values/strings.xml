@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">StarWars.Android</string>
+    <string name="app_name_detail">StarWars Detail</string>
+    <string name="app_text">Hello, Android!</string>
+</resources>
