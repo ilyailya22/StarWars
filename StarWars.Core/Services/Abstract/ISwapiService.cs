@@ -5,5 +5,7 @@ namespace StarWars.Core.Services.Abstract;
 
 public interface ISwapiService
 {
-    Task<SwapiPersonModel[]> GetStarWarsPeopleAsync();
+    Task<CharacterModel[]> GetStarWarsCharactersAsync();
+
+    Task<PlanetModel[]> GetStarWarsPlanetsAsync();
 }

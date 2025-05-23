@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StarWars.Core.Const;
@@ -13,7 +11,7 @@ public sealed class SwapiService : ISwapiService
 {
     private readonly HttpClient _httpClient = new();
 
-    public async Task<SwapiPersonModel[]> GetStarWarsPeopleAsync()
+    public async Task<CharacterModel[]> GetStarWarsCharactersAsync()
     {
         var swapiResponse = await GetSwapiEndpointsAsync();
         if (swapiResponse == null)
@@ -21,7 +19,18 @@ public sealed class SwapiService : ISwapiService
             return null;
         }
         var rawResponse = await GetApiResponse(swapiResponse.People);
-        return JsonConvert.DeserializeObject<SwapiPersonModel[]>(rawResponse);
+        return JsonConvert.DeserializeObject<CharacterModel[]>(rawResponse);
+    }
+    
+    public async Task<PlanetModel[]> GetStarWarsPlanetsAsync()
+    {
+        var swapiResponse = await GetSwapiEndpointsAsync();
+        if (swapiResponse == null)
+        {
+            return null;
+        }
+        var rawResponse = await GetApiResponse(swapiResponse.Planets);
+        return JsonConvert.DeserializeObject<PlanetModel[]>(rawResponse);
     }
     
     private async Task<SwapiResponse> GetSwapiEndpointsAsync()

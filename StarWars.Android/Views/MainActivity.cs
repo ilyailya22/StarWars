@@ -9,11 +9,19 @@ namespace StarWars.Android.Views;
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity : MvxActivity<MainViewModel>
 {
-    protected override void OnCreate(Bundle? savedInstanceState)
+    protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-
-        // Set our view from the "main" layout resource
+        
         SetContentView(ResourceConstant.Layout.activity_main);
+        
+        if (savedInstanceState == null)
+        {
+            var fragment = new CharactersFragment();
+            SupportFragmentManager
+                .BeginTransaction()
+                .Replace(ResourceConstant.Id.content_frame, fragment)
+                .Commit();
+        }
     }
 }

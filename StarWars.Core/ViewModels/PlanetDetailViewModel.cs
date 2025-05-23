@@ -6,22 +6,22 @@ using StarWars.Core.Models;
 
 namespace StarWars.Core.ViewModels;
 
-public sealed class DetailViewModel : MvxViewModel<SwapiPersonModel>
+public sealed class PlanetDetailViewModel : MvxViewModel<PlanetModel>
 {
     private readonly IMvxNavigationService _navigationService;
     public IMvxAsyncCommand GoBackCommand { get; }
 
-    public DetailViewModel(IMvxNavigationService navigationService)
+    public PlanetDetailViewModel(IMvxNavigationService navigationService)
     {
         _navigationService = navigationService;
         GoBackCommand = new MvxAsyncCommand(GoBack);
     }
 
-    public SwapiPersonModel Person { get; private set; }
+    public PlanetModel Planet { get; private set; }
 
-    public override void Prepare(SwapiPersonModel parameter)
+    public override void Prepare(PlanetModel parameter)
     {
-        Person = parameter;
+        Planet = parameter;
     }
     
     private async Task GoBack()

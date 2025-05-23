@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace StarWars.Core.Models;
 
-public sealed class SwapiPersonModel
+public sealed class CharacterModel
 {
     [JsonProperty("name")]
     public string Name { get; set; }

@@ -6,14 +6,14 @@ using StarWars.Core.ViewModels;
 namespace StarWars.Android.Views;
 
 [MvxActivityPresentation]
-[Activity(Label = "@string/app_name_detail")]
-public class DetailActivity : MvxActivity<DetailViewModel>
+[Activity(Label = "@string/app_name_character_detail")]
+public class CharacterDetailActivity : MvxActivity<CharacterDetailViewModel>
 {
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
 
         // Set our view from the "main" layout resource
-        SetContentView(ResourceConstant.Layout.activity_detail);
+        SetContentView(ResourceConstant.Layout.activity_character_detail);
     }
 }
