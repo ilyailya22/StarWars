@@ -9,6 +9,11 @@ public sealed class MainViewModel(IMvxNavigationService navigationService) : Mvx
     public override async Task Initialize()
     {
         await base.Initialize();
-        await navigationService.Navigate<CharactersViewModel>();
+    }
+
+    public override void ViewAppeared()
+    {
+        base.ViewAppeared();
+        navigationService.Navigate<CharactersViewModel>();
     }
 }

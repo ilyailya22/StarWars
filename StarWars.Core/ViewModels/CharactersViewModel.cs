@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
@@ -13,38 +14,17 @@ public sealed class CharactersViewModel : MvxViewModel
 {
     private readonly IMvxNavigationService _navigationService;
     private readonly ISwapiService _swapiService;
-    public IMvxAsyncCommand<CharacterModel> SelectCharacterCommand { get; }
+    public IMvxAsyncCommand<CharacterViewModel> SelectCharacterCommand { get; }
 
     public CharactersViewModel(IMvxNavigationService navigationService, ISwapiService swapiService)
     {
         _navigationService = navigationService;
         _swapiService = swapiService;
         
-        SelectCharacterCommand = new MvxAsyncCommand<CharacterModel>(async character =>
-        {
-            if (character != null)
-            {
-                await navigationService.Navigate<CharacterDetailViewModel, CharacterModel>(character);
-            }
-        });
+        SelectCharacterCommand = new MvxAsyncCommand<CharacterViewModel>(OnCharacterSelectedAsync);
     }
     
-    public ObservableCollection<CharacterModel> Characters { get; } = [];
-
-    private CharacterModel _selectedCharacter;
-
-    public CharacterModel SelectedCharacter
-    {
-        get => _selectedCharacter;
-        set
-        {
-            if (SetProperty(ref _selectedCharacter, value) && value != null)
-            {
-                _navigationService.Navigate<CharacterDetailViewModel, CharacterModel>(value);
-                SelectedCharacter = null;
-            }
-        }
-    }
+    public ObservableCollection<CharacterViewModel> Characters { get; } = [];
 
     public override async Task Initialize()
     {
@@ -52,6 +32,14 @@ public sealed class CharactersViewModel : MvxViewModel
 
         var characters = await _swapiService.GetStarWarsCharactersAsync();
         
-        Characters.ReplaceWith(characters);
+        Characters.ReplaceWith(characters.Select(x => new CharacterViewModel(x)));
+    }
+    
+    private async Task OnCharacterSelectedAsync(CharacterViewModel character)
+    {
+        if (character != null)
+        {
+            await _navigationService.Navigate<CharacterDetailViewModel, CharacterModel>(character.Model);
+        }
     }
 }

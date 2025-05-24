@@ -14,14 +14,5 @@ public class MainActivity : MvxActivity<MainViewModel>
         base.OnCreate(savedInstanceState);
         
         SetContentView(ResourceConstant.Layout.activity_main);
-        
-        if (savedInstanceState == null)
-        {
-            var fragment = new CharactersFragment();
-            SupportFragmentManager
-                .BeginTransaction()
-                .Replace(ResourceConstant.Id.content_frame, fragment)
-                .Commit();
-        }
     }
 }
