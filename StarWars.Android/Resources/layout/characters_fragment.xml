@@ -6,7 +6,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="64dp"
         android:background="#000000" >
 
     <MvvmCross.DroidX.RecyclerView.MvxRecyclerView

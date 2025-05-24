@@ -6,6 +6,7 @@ using MvvmCross.Platforms.Android.Binding.BindingContext;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using MvvmCross.Platforms.Android.Views.Fragments;
 using StarWars.Android.Adapters;
+using StarWars.Core.Const;
 using StarWars.Core.ViewModels;
 
 namespace StarWars.Android.Views;
@@ -16,12 +17,15 @@ public sealed class CharactersFragment : MvxFragment<CharactersViewModel>
     private MvxRecyclerView _charactersList;
     public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        var ignored = base.OnCreateView(inflater, container, savedInstanceState);
+        base.OnCreateView(inflater, container, savedInstanceState);
 
         var view = this.BindingInflate(ResourceConstant.Layout.characters_fragment, container, false);
         
+        var spacingInPx = (int)(Resources.DisplayMetrics!.Density * Constants.SpacingDp + 0.5f);
+        
         _charactersList = view?.FindViewById<MvxRecyclerView>(ResourceConstant.Id.charactersList);
-        _charactersList.Adapter = new CharactersAdapter((IMvxAndroidBindingContext)this.BindingContext);
+        _charactersList!.AddItemDecoration(new SpacingItemDecoration(spacingInPx));
+        _charactersList!.Adapter = new CharactersAdapter((IMvxAndroidBindingContext)BindingContext);
 
         return view;
     }

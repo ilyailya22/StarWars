@@ -18,6 +18,16 @@
         <item name="android:layout_marginEnd">8dp</item>
     </style>
 
+    <style name="StarJedi">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFD700</item>
+        <item name="android:fontFamily">@font/starjedi</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
     <style name="StarJediLayout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
