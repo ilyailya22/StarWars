@@ -4,19 +4,19 @@ using AndroidX.RecyclerView.Widget;
 using MvvmCross.DroidX.RecyclerView;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
 using StarWars.Android.ViewHolders;
-using StarWars.Core.ViewModels.Character;
+using StarWars.Core.ViewModels.Planet;
 
 namespace StarWars.Android.Adapters;
 
-public class CharactersAdapter(IMvxAndroidBindingContext bindingContext) : MvxRecyclerAdapter(bindingContext)
+public class PlanetsAdapter(IMvxAndroidBindingContext bindingContext) : MvxRecyclerAdapter(bindingContext)
 {
-    private const int CharacterItemViewType = 1002;
+    private const int PlanetItemViewType = 1002;
 
     public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
     {
         return viewType switch
         {
-            CharacterItemViewType => CreateItemViewHolder(parent),
+            PlanetItemViewType => CreateItemViewHolder(parent),
             _ => base.OnCreateViewHolder(parent, viewType)
         };
     }
@@ -27,7 +27,7 @@ public class CharactersAdapter(IMvxAndroidBindingContext bindingContext) : MvxRe
 
         return itemViewModel switch
         {
-            CharacterItemViewModel => CharacterItemViewType,
+            PlanetItemViewModel => PlanetItemViewType,
             _ => base.GetItemViewType(position)
         };
     }
@@ -36,8 +36,8 @@ public class CharactersAdapter(IMvxAndroidBindingContext bindingContext) : MvxRe
     {
         var itemBindingContext = new MvxAndroidBindingContext(parent.Context, BindingContext.LayoutInflaterHolder);
 
-        var itemView = itemBindingContext.BindingInflate(ResourceConstant.Layout.item_character, parent, false);
-        var holder = new CharacterItemViewHolder(itemView, itemBindingContext);
+        var itemView = itemBindingContext.BindingInflate(ResourceConstant.Layout.item_planet, parent, false);
+        var holder = new PlanetItemViewHolder(itemView, itemBindingContext);
 
         return holder;
     }

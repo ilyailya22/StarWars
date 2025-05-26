@@ -2,7 +2,7 @@
 
 namespace StarWars.Core.Models;
 
-public sealed class SwapiResponse
+public sealed class SwapiEndpointsResponse
 {
     [JsonProperty("films")]
     public string Films { get; set; }

@@ -4,6 +4,8 @@
         <item name="android:background">#000000</item>
         <item name="android:textColor">#FFE81F</item>
         <item name="android:fontFamily">@font/starjedi</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
     </style>
     <style name="StarJediText">
         <item name="android:layout_width">wrap_content</item>

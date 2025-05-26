@@ -1,48 +1,62 @@
-﻿using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using StarWars.Core.Const;
 using StarWars.Core.Models;
 using StarWars.Core.Services.Abstract;
 
 namespace StarWars.Core.Services.Concrete;
 
-public sealed class SwapiService : ISwapiService
+public sealed class SwapiService: ApiServiceBase, ISwapiService
 {
-    private readonly HttpClient _httpClient = new();
+    public Task<CharacterModel[]> GetStarWarsCharactersAsync()
+    {
+        return GetStarWarsDataAsync<CharacterModel>(endpoints => endpoints.People);
+    }
 
-    public async Task<CharacterModel[]> GetStarWarsCharactersAsync()
+    public Task<PlanetModel[]> GetStarWarsPlanetsAsync()
     {
-        var swapiResponse = await GetSwapiEndpointsAsync();
-        if (swapiResponse == null)
+        return GetStarWarsDataAsync<PlanetModel>(endpoints => endpoints.Planets);
+    }
+    
+    public Task<StarshipModel[]> GetStarWarsStarshipsAsync()
+    {
+        return GetStarWarsDataAsync<StarshipModel>(endpoints => endpoints.Starships);
+    }
+    
+    public Task<FilmModel[]> GetStarWarsFilmsAsync()
+    {
+        return GetStarWarsDataAsync<FilmModel>(endpoints => endpoints.Films);
+    }
+    
+    public Task<VehicleModel[]> GetStarWarsVehiclesAsync()
+    {
+        return GetStarWarsDataAsync<VehicleModel>(endpoints => endpoints.Vehicles);
+    }
+    
+    public Task<SpecieModel[]> GetStarWarsSpeciesAsync()
+    {
+        return GetStarWarsDataAsync<SpecieModel>(endpoints => endpoints.Species);
+    }
+    
+    private async Task<T[]> GetStarWarsDataAsync<T>(Func<SwapiEndpointsResponse, string> getUrl)
+    {
+        var swapiEndpointsResponse = await GetSwapiEndpointsAsync();
+        if (swapiEndpointsResponse == null)
         {
             return null;
         }
-        var rawResponse = await GetApiResponse(swapiResponse.People);
-        return JsonConvert.DeserializeObject<CharacterModel[]>(rawResponse);
+
+        var url = getUrl(swapiEndpointsResponse);
+        return await GetAsync<T[]>(url);
     }
     
-    public async Task<PlanetModel[]> GetStarWarsPlanetsAsync()
+    public Task<T> GetStarWarsDataSingleAsync<T>(string url)
     {
-        var swapiResponse = await GetSwapiEndpointsAsync();
-        if (swapiResponse == null)
-        {
-            return null;
-        }
-        var rawResponse = await GetApiResponse(swapiResponse.Planets);
-        return JsonConvert.DeserializeObject<PlanetModel[]>(rawResponse);
+        return GetAsync<T>(url);
     }
-    
-    private async Task<SwapiResponse> GetSwapiEndpointsAsync()
+
+    private async Task<SwapiEndpointsResponse> GetSwapiEndpointsAsync()
     {
-        var rawResponse = await GetApiResponse(Constants.SwapiInfoUrl);
-        return JsonConvert.DeserializeObject<SwapiResponse>(rawResponse);
-    }
-    
-    private async Task<string> GetApiResponse(string url)
-    {
-        var response = await _httpClient.GetAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        return await GetAsync<SwapiEndpointsResponse>(Constants.SwapiInfoUrl);
     }
 }

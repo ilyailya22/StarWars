@@ -6,7 +6,7 @@ using MvvmCross.ViewModels;
 
 namespace StarWars.Android.ViewHolders;
 
-public class BaseRecyclerViewHolder<TItemViewModel> : MvxRecyclerViewHolder, ICompositeDisposableAware
+public class BaseRecyclerViewHolder<TItemViewModel> : MvxRecyclerViewHolder
     where TItemViewModel : MvxNotifyPropertyChanged
 {
     public BaseRecyclerViewHolder(View itemView, IMvxAndroidBindingContext context)
@@ -38,8 +38,4 @@ public class BaseRecyclerViewHolder<TItemViewModel> : MvxRecyclerViewHolder, ICo
 
         bindingSet.Apply();
     }
-}
-
-public interface ICompositeDisposableAware
-{
 }
