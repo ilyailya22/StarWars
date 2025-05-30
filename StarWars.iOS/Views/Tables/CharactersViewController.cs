@@ -8,27 +8,53 @@ using StarWars.iOS.Views.Tables.Cells;
 namespace StarWars.iOS.Views.Tables;
 
 [MvxChildPresentation]
-public class CharactersViewController : MvxTableViewController<CharactersViewModel>
+public class CharactersViewController  : MvxViewController<CharactersViewModel>
 {
+    private UITableView _tableView;
+
     public override void ViewDidLoad()
     {
         base.ViewDidLoad();
+
         View.BackgroundColor = UIColor.Black;
 
+        _tableView = new UITableView
+        {
+            TranslatesAutoresizingMaskIntoConstraints = false,
+            RowHeight = UITableView.AutomaticDimension,
+            EstimatedRowHeight = 44
+        };
+
+        View.AddSubview(_tableView);
+
+        NSLayoutConstraint.ActivateConstraints(new[]
+        {
+            _tableView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor),
+            _tableView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor),
+            _tableView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
+            _tableView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor)
+        });
+
+        // 🔷 Реєстрація кастомної UITableViewCell
+        _tableView.RegisterClassForCellReuse(typeof(CharacterItemTableViewCell), nameof(CharacterItemTableViewCell));
+
+        // 🔷 Призначення джерела даних
         var source = new MvxSimpleTableViewSource(
-            TableView,
-            typeof(UITableViewCell),
-            nameof(CustomStarWarsCell)
+            _tableView,
+            typeof(CharacterItemTableViewCell),
+            CharacterItemTableViewCell.Key
         );
 
-        TableView.Source = source;
-        TableView.RowHeight = 60;
+        _tableView.Source = source;
 
+        // 🔷 Прив'язка
         var set = this.CreateBindingSet<CharactersViewController, CharactersViewModel>();
         set.Bind(source).To(vm => vm.CharacterItems);
-        set.Bind(source).For(v => v.SelectionChangedCommand).To(vm => vm.SelectCharacterCommand);
+        
+        set.Bind(source).For(v => v.ItemsSource).To(vm => vm.CharacterItems);
+        set.Bind(source).To(vm => vm.SelectCharacterCommand);
         set.Apply();
 
-        TableView.ReloadData();
+        _tableView.ReloadData();
     }
 }

@@ -10,32 +10,12 @@ public sealed class SwapiService: ApiServiceBase, ISwapiService
 {
     public Task<CharacterModel[]> GetStarWarsCharactersAsync()
     {
-        return Task.FromResult(new CharacterModel[]
-        {
-            new CharacterModel
-            {
-                Name = "CharacterModel1"
-            },
-            new CharacterModel
-            {
-                Name = "CharacterModel2"
-            }
-        });
+        return GetStarWarsDataAsync<CharacterModel>(endpoints => endpoints.People);
     }
 
     public Task<PlanetModel[]> GetStarWarsPlanetsAsync()
     {
-        return Task.FromResult(new PlanetModel[]
-        {
-            new PlanetModel
-            {
-                Name = "NamePlanet1"
-            },
-            new PlanetModel
-            {
-                Name = "NamePlanet2"
-            }
-        });
+        return GetStarWarsDataAsync<PlanetModel>(endpoints => endpoints.Planets);
     }
     
     public Task<StarshipModel[]> GetStarWarsStarshipsAsync()

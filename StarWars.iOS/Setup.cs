@@ -23,6 +23,7 @@ public class Setup : MvxIosSetup<App>
 
     protected override ILoggerFactory CreateLogFactory()
     {
+        //for test
         // serilog configuration
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()

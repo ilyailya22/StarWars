@@ -11,6 +11,7 @@ public class MainViewController : MvxViewController<MainViewModel>
     private UIButton _planetsButton;
     private UILabel _titleLabel;
     private UIView _contentContainer;
+    private UIViewController _selectedViewController;
 
     public override void ViewDidLoad()
     {
@@ -72,7 +73,7 @@ public class MainViewController : MvxViewController<MainViewModel>
             _contentContainer.BottomAnchor.ConstraintEqualTo(View.BottomAnchor)
         });
 
-        _charactersButton.TouchUpInside += (s, e) => ViewModel.SelectCharactersViewCommand.Execute(null);
-        _planetsButton.TouchUpInside += (s, e) => ViewModel.SelectPlanetsViewCommand.Execute(null);
+        _charactersButton.TouchUpInside += async (s, e) => await ViewModel.SelectCharactersViewCommand.ExecuteAsync();
+        _planetsButton.TouchUpInside += async (s, e) => await ViewModel.SelectPlanetsViewCommand.ExecuteAsync();
     }
 }

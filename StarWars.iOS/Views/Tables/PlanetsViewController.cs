@@ -9,27 +9,50 @@ using StarWars.iOS.Views.Tables.Cells;
 namespace StarWars.iOS.Views.Tables;
 
 [MvxChildPresentation]
-public class PlanetsViewController : MvxTableViewController<PlanetsViewModel>
+public class PlanetsViewController  : MvxViewController<PlanetsViewModel>
 {
+    private UITableView _tableView;
+
     public override void ViewDidLoad()
     {
         base.ViewDidLoad();
+
         View.BackgroundColor = UIColor.Black;
 
+        _tableView = new UITableView
+        {
+            TranslatesAutoresizingMaskIntoConstraints = false,
+            RowHeight = UITableView.AutomaticDimension,
+            EstimatedRowHeight = 44
+        };
+
+        View.AddSubview(_tableView);
+
+        NSLayoutConstraint.ActivateConstraints(new[]
+        {
+            _tableView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor),
+            _tableView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor),
+            _tableView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
+            _tableView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor)
+        });
+
+        // 🔷 Реєстрація кастомної UITableViewCell
+        _tableView.RegisterClassForCellReuse(typeof(PlanetItemTableViewCell), nameof(PlanetItemTableViewCell));
+
+        // 🔷 Призначення джерела даних
         var source = new MvxSimpleTableViewSource(
-            TableView,
-            typeof(UITableViewCell),
-            nameof(CustomStarWarsCell)
+            _tableView,
+            typeof(PlanetItemTableViewCell),
+            PlanetItemTableViewCell.Key
         );
 
-        TableView.Source = source;
-        TableView.RowHeight = 60;
+        _tableView.Source = source;
 
+        // 🔷 Прив'язка
         var set = this.CreateBindingSet<PlanetsViewController, PlanetsViewModel>();
         set.Bind(source).To(vm => vm.PlanetItems);
-        set.Bind(source).For(v => v.SelectionChangedCommand).To(vm => vm.SelectPlanetCommand);
         set.Apply();
 
-        TableView.ReloadData();
+        _tableView.ReloadData();
     }
 }
