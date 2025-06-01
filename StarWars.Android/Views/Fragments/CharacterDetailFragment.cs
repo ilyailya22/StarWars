@@ -9,7 +9,7 @@ using StarWars.Core.ViewModels.Character;
 
 namespace StarWars.Android.Views.Fragments;
 
-[MvxFragmentPresentation(ActivityHostViewModelType = typeof(DetailViewModel), FragmentContentId = ResourceConstant.Id.content_frame_detail)]
+[MvxFragmentPresentation(ActivityHostViewModelType = typeof(MainViewModel), FragmentContentId = ResourceConstant.Id.content_frame, AddToBackStack = true)]
 public sealed class CharacterDetailFragment : MvxFragment<CharacterDetailViewModel>
 {
     private TextView _textViewValueName;
