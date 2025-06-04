@@ -3,12 +3,13 @@ using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using StarWars.Core.ViewModels.Planet;
+using StarWars.iOS.Extensions;
 using StarWars.iOS.Views.Tables.Cells;
 
 namespace StarWars.iOS.Views.Tables;
 
 [MvxChildPresentation]
-public class PlanetsViewController  : MvxViewController<PlanetsViewModel>
+public class PlanetsViewController : MvxViewController<PlanetsViewModel>
 {
     private UITableView _tableView;
 
@@ -20,6 +21,7 @@ public class PlanetsViewController  : MvxViewController<PlanetsViewModel>
 
         _tableView = new UITableView
         {
+            BackgroundColor = UIColor.Black,
             TranslatesAutoresizingMaskIntoConstraints = false,
             RowHeight = UITableView.AutomaticDimension,
             EstimatedRowHeight = 44
@@ -27,12 +29,11 @@ public class PlanetsViewController  : MvxViewController<PlanetsViewModel>
 
         View.AddSubview(_tableView);
 
-        NSLayoutConstraint.ActivateConstraints([
-            _tableView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor),
-            _tableView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor),
-            _tableView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
-            _tableView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor)
-        ]);
+        _tableView
+            .TopToTopSafeAreaOf(View)
+            .BottomToBottomSafeAreaOf(View)
+            .StartToStartOf(View)
+            .EndToEndOf(View);
         
         _tableView.RegisterClassForCellReuse(typeof(PlanetItemTableViewCell), nameof(PlanetItemTableViewCell));
         
@@ -49,6 +50,10 @@ public class PlanetsViewController  : MvxViewController<PlanetsViewModel>
         set.Bind(source)
             .For(v => v.ItemsSource)
             .To(vm => vm.PlanetItems);
+        
+        set.Bind(source)
+            .For(v => v.SelectionChangedCommand)
+            .To(vm => vm.SelectPlanetCommand);
         
         set.Apply();
 

@@ -3,6 +3,7 @@ using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using StarWars.Core.ViewModels.Character;
+using StarWars.iOS.Extensions;
 using StarWars.iOS.Views.Tables.Cells;
 
 namespace StarWars.iOS.Views.Tables;
@@ -20,6 +21,7 @@ public class CharactersViewController  : MvxViewController<CharactersViewModel>
 
         _tableView = new UITableView
         {
+            BackgroundColor = UIColor.Black,
             TranslatesAutoresizingMaskIntoConstraints = false,
             RowHeight = UITableView.AutomaticDimension,
             EstimatedRowHeight = 44
@@ -27,12 +29,11 @@ public class CharactersViewController  : MvxViewController<CharactersViewModel>
 
         View.AddSubview(_tableView);
 
-        NSLayoutConstraint.ActivateConstraints([
-            _tableView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor),
-            _tableView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor),
-            _tableView.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
-            _tableView.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor)
-        ]);
+        _tableView
+            .TopToTopSafeAreaOf(View)
+            .BottomToBottomSafeAreaOf(View)
+            .StartToStartOf(View)
+            .EndToEndOf(View);
         
         _tableView.RegisterClassForCellReuse(typeof(CharacterItemTableViewCell), nameof(CharacterItemTableViewCell));
 
@@ -51,7 +52,9 @@ public class CharactersViewController  : MvxViewController<CharactersViewModel>
             .For(v => v.ItemsSource)
             .To(vm => vm.CharacterItems);
         
-        set.Bind(source).To(vm => vm.SelectCharacterCommand);
+        set.Bind(source)
+            .For(v => v.SelectionChangedCommand)
+            .To(vm => vm.SelectCharacterCommand);
         
         set.Apply();
 

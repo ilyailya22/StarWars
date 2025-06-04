@@ -1,6 +1,8 @@
-﻿using MvvmCross.Platforms.Ios.Presenters.Attributes;
+﻿using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using StarWars.Core.ViewModels;
+using StarWars.iOS.Extensions;
 
 namespace StarWars.iOS.Views;
 
@@ -50,27 +52,33 @@ public class MainViewController : MvxViewController<MainViewModel>
         _planetsButton.TranslatesAutoresizingMaskIntoConstraints = false;
         _contentContainer.TranslatesAutoresizingMaskIntoConstraints = false;
 
-        NSLayoutConstraint.ActivateConstraints([
-            _titleLabel.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor, 32),
-            _titleLabel.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
-            _titleLabel.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor),
-            _titleLabel.HeightAnchor.ConstraintEqualTo(40),
+        _titleLabel
+            .TopToTopSafeAreaOf(View)
+            .StartToStartOf(View)
+            .EndToEndOf(View)
+            .HeightTo(40);
 
-            _charactersButton.TopAnchor.ConstraintEqualTo(_titleLabel.BottomAnchor, 16),
-            _charactersButton.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor, 16),
-            _charactersButton.TrailingAnchor.ConstraintEqualTo(View.CenterXAnchor, -8),
+        _charactersButton
+            .TopToBottomOf(_titleLabel, 16)
+            .StartToStartOf(View, 16)
+            .EndToCenterOf(View, 8);
 
-            _planetsButton.TopAnchor.ConstraintEqualTo(_titleLabel.BottomAnchor, 16),
-            _planetsButton.LeadingAnchor.ConstraintEqualTo(View.CenterXAnchor, 8),
-            _planetsButton.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor, -16),
+        _planetsButton
+            .TopToBottomOf(_titleLabel, 16)
+            .StartToCenterOf(View, 8)
+            .EndToEndOf(View, 16);
 
-            _contentContainer.TopAnchor.ConstraintEqualTo(_charactersButton.BottomAnchor, 16),
-            _contentContainer.LeadingAnchor.ConstraintEqualTo(View.LeadingAnchor),
-            _contentContainer.TrailingAnchor.ConstraintEqualTo(View.TrailingAnchor),
-            _contentContainer.BottomAnchor.ConstraintEqualTo(View.BottomAnchor)
-        ]);
+        _contentContainer
+            .TopToBottomOf(_charactersButton, 16)
+            .StartToStartOf(View)
+            .EndToEndOf(View)
+            .BottomToBottomOf(View);
 
-        _charactersButton.TouchUpInside += async (_, _) => await ViewModel!.SelectCharactersViewCommand.ExecuteAsync();
-        _planetsButton.TouchUpInside += async (_, _) => await ViewModel!.SelectPlanetsViewCommand.ExecuteAsync();
+        var set = this.CreateBindingSet<MainViewController, MainViewModel>();
+
+        set.Bind(_charactersButton).To(vm => vm.SelectCharactersViewCommand);
+        set.Bind(_planetsButton).To(vm => vm.SelectPlanetsViewCommand);
+
+        set.Apply();
     }
 }
