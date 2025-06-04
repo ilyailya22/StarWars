@@ -60,7 +60,7 @@ public sealed class PlanetDetailViewModel(IMvxNavigationService navigationServic
 
     private Task<bool> GoBack()
     {
-        return navigationService.Navigate<PlanetsViewModel>();
+        return navigationService.Close(this);
     }
     
     private async Task OnCharacterSelectedAsync(CharacterModel character)

@@ -61,7 +61,7 @@ public sealed class CharacterDetailViewModel(IMvxNavigationService navigationSer
 
     private Task<bool> GoBack()
     {
-        return navigationService.Navigate<CharactersViewModel>();
+        return navigationService.Close(this);
     }
     
     private async Task OnPlanetSelectedAsync(PlanetItemViewModel planet)
