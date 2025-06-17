@@ -36,10 +36,6 @@
         <SubType>Designer</SubType>
         <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       </AndroidResource>
-      <AndroidResource Update="Resources\layout\activity_detail.xml">
-        <SubType>Designer</SubType>
-        <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      </AndroidResource>
       <AndroidResource Update="Resources\layout\planet_detail_fragment.xml">
         <SubType>Designer</SubType>
         <Generator>MSBuild:UpdateGeneratedFiles</Generator>
